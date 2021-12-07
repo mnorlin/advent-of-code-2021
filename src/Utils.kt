@@ -8,6 +8,26 @@ import java.security.MessageDigest
 fun readInput(name: String) = File("src", "$name.txt").readLines()
 
 /**
+ * Transpose a Matrix
+ */
+fun List<IntArray>.transpose(): List<IntArray> {
+    val rows = this.indices
+    val cols = this.first().indices
+    val transposed: List<IntArray> = List(cols.count()) { IntArray(rows.count()) }
+    for (row in rows) {
+        for (col in cols) {
+            transposed[col][row] = this[row][col]
+        }
+    }
+    return transposed
+}
+
+/**
+ * Flip a binary Int
+ */
+fun Int.flipBit(): Int = if(this == 1) 0 else 1
+
+/**
  * Converts string to md5 hash.
  */
 fun String.md5(): String = BigInteger(1, MessageDigest.getInstance("MD5").digest(toByteArray())).toString(16)

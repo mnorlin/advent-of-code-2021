@@ -73,52 +73,42 @@ Use the binary numbers in your diagnostic report to calculate the oxygen generat
 Your puzzle answer was 4636702.
 */
 fun main() {
-    fun toMatrix(input: List<String>): List<IntArray> {
-        return input.map { it.split("").slice(1..12).map { it.toInt() }.toIntArray() }
-    }
 
-    fun mostCommonInColumn(matrix: List<IntArray>, columnRange: IntRange): BooleanArray {
-        val rowCounter = IntArray(matrix.first().count())
-        for (row in matrix) {
-            for (i in columnRange) {
-                rowCounter[i] += row[i]
-            }
-        }
-        return rowCounter.map { 2 * it - matrix.count() >= 0 }.toBooleanArray()
-    }
-
-    fun part1(input: List<String>): Int {
-        val matrix = toMatrix(input)
-
-        val common = mostCommonInColumn(matrix, matrix.first().indices);
-        val gamma = common.map { if (it) 1 else 0 }.joinToString("")
-        val epsilon = common.map { if (it) 0 else 1 }.joinToString("")
+    fun part1(matrix: List<IntArray>): Int {
+        val majority = matrix.transpose().map { mostCommon(it) }
+        val gamma = majority.joinToString("")
+        val epsilon = majority.map { it.flipBit() }.joinToString("")
 
         return gamma.toInt(2) * epsilon.toInt(2);
     }
 
-    fun part2(input: List<String>): Int {
-        var matrixGamma = toMatrix(input)
-        for (column in matrixGamma.first().indices) {
-            if (matrixGamma.count() == 1) break
-            val mostCommon = mostCommonInColumn(matrixGamma, column.rangeTo(column))[column]
-            matrixGamma = matrixGamma.filter { it[column] == if (mostCommon) 1 else 0 }
+    fun part2(matrix: List<IntArray>): Int {
+        val gamma = mutableListOf<Int>()
+        val epsilon = mutableListOf<Int>()
+        for (col in matrix.first().indices) {
+            val filterGamma = matrix.filter { it.take(gamma.count()) == gamma }
+            val filterEpsilon = matrix.filter { it.take(epsilon.count()) == epsilon }
+
+            if (filterGamma.count() == 1) gamma.addAll(filterGamma.first().drop(gamma.count()))
+            else gamma.add(mostCommon(matrix.filter { it.take(gamma.count()) == gamma }.transpose()[col]))
+
+            if (filterEpsilon.count() == 1) epsilon.addAll(filterEpsilon.first().drop(epsilon.count()))
+            else epsilon.add(mostCommon(matrix.filter { it.take(epsilon.count()) == epsilon }.transpose()[col]).flipBit())
         }
 
-        var matrixEpsilon = toMatrix(input)
-        for (column in matrixEpsilon.first().indices) {
-            if (matrixEpsilon.count() == 1) break
-            val mostCommon = mostCommonInColumn(matrixEpsilon, column.rangeTo(column))[column]
-            matrixEpsilon = matrixEpsilon.filter { it[column] == if (mostCommon) 0 else 1 }
-        }
-
-        val gamma = matrixGamma.first().joinToString("")
-        val epsilon = matrixEpsilon.first().joinToString("")
-
-        return gamma.toInt(2) * epsilon.toInt(2)
+        return gamma.joinToString("").toInt(2) * epsilon.joinToString("").toInt(2)
     }
 
     val input = readInput("Day03")
-    println(part1(input))
-    println(part2(input))
+    val matrix = toMatrix(input)
+    println(part1(matrix))
+    println(part2(matrix))
+}
+
+fun toMatrix(input: List<String>): List<IntArray> {
+    return input.map { it.chunked(1).map { cell -> cell.toInt() }.toIntArray() }
+}
+
+fun mostCommon(column: IntArray): Int {
+    return if (2 * column.sum() >= column.count()) 1 else 0
 }

@@ -113,7 +113,7 @@ fun main() {
 
 class Board(private val board: List<List<Int>>) {
     private val marked = mutableListOf<Int>()
-    private val markedCoordinates = mutableListOf<Pair<Int, Int>>()
+    private val markedCoordinates = mutableListOf<Coordinate>()
 
     fun mark(number: Int) {
         if (isWinner()) return
@@ -122,12 +122,12 @@ class Board(private val board: List<List<Int>>) {
 
         marked.add(number)
         val col = board[row].indexOf(number)
-        markedCoordinates.add(Pair(row, col))
+        markedCoordinates.add(Coordinate(row, col))
     }
 
     fun isWinner(): Boolean {
-        val horizontalWin = markedCoordinates.groupBy { it.first }.filter { (_, b) -> b.count() == 5 }.isNotEmpty()
-        val verticalWin = markedCoordinates.groupBy { it.second }.filter { (_, b) -> b.count() == 5 }.isNotEmpty()
+        val horizontalWin = markedCoordinates.groupBy { it.row }.filter { (_, b) -> b.count() == 5 }.isNotEmpty()
+        val verticalWin = markedCoordinates.groupBy { it.col }.filter { (_, b) -> b.count() == 5 }.isNotEmpty()
 
         return horizontalWin or verticalWin
     }
@@ -141,3 +141,5 @@ class Board(private val board: List<List<Int>>) {
         markedCoordinates.clear()
     }
 }
+
+data class Coordinate(val row: Int, val col: Int)
