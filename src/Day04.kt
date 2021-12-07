@@ -141,5 +141,3 @@ class Board(private val board: List<List<Int>>) {
         markedCoordinates.clear()
     }
 }
-
-data class Coordinate(val row: Int, val col: Int)

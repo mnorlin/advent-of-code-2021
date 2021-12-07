@@ -92,7 +92,7 @@ fun main() {
 
 fun toLine(input: String): Line {
     return input.split(" -> ").map { it.split(",") }.zipWithNext { a, b ->
-        Line(Coordinate(a.last().toInt(), a.first().toInt()), Coordinate(b.last().toInt(), b.first().toInt()))
+        Line(Coordinate(col = a.first().toInt(), row = a.last().toInt()), Coordinate(col = b.first().toInt(), row = b.last().toInt()))
     }.first()
 }
 
@@ -103,9 +103,9 @@ class Line(val start: Coordinate, val end: Coordinate) {
         val firstRange = if (start.col < end.col) start.col..end.col else start.col downTo end.col
         val secondRange = if (start.row < end.row) start.row..end.row else start.row downTo end.row
 
-        line = if (firstRange.count() == 1) secondRange.map { Coordinate(it, firstRange.first) }
-        else if (secondRange.count() == 1) firstRange.map { Coordinate(secondRange.first, it) }
-        else firstRange.zip(secondRange).map { Coordinate(it.second, it.first) }
+        line = if (firstRange.count() == 1) secondRange.map { Coordinate(col = firstRange.first, row = it) }
+        else if (secondRange.count() == 1) firstRange.map { Coordinate(col = it, row = secondRange.first) }
+        else firstRange.zip(secondRange).map { Coordinate(col = it.first, row = it.second) }
     }
 }
 
@@ -113,7 +113,7 @@ fun debug(lines: List<Line>) {
     val points = lines.flatMap { it.line }.groupBy { it }
     for (row in points.minOf { it.key.row }..points.maxOf { it.key.row }) {
         for (col in points.minOf { it.key.col }..points.maxOf { it.key.col }) {
-            print(points[Coordinate(row, col)]?.count() ?: ".")
+            print(points[Coordinate(col = col, row = row)]?.count() ?: ".")
         }
         println()
     }

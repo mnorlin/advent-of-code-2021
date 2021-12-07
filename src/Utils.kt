@@ -28,6 +28,13 @@ fun List<IntArray>.transpose(): List<IntArray> {
 fun Int.flipBit(): Int = if(this == 1) 0 else 1
 
 /**
+ * Get triangular number for an Int
+ */
+fun Int.triangular(): Int = if (this == 0) 0 else (this downTo 0).reduce{sum, number -> sum + number}
+/**
  * Converts string to md5 hash.
  */
 fun String.md5(): String = BigInteger(1, MessageDigest.getInstance("MD5").digest(toByteArray())).toString(16)
+
+
+data class Coordinate(val row: Int, val col: Int)
