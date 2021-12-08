@@ -9,7 +9,9 @@ fun main() {
 
     fun part2(crabs: List<Int>): Int {
         val max = crabs.maxOrNull()
-        return (0..(max ?: 0)).map { position -> crabs.sumOf { abs(it - position).triangular() } }.minOrNull() ?: 0
+        return (0..(max ?: 0)).map {
+            position -> crabs.sumOf { abs(it - position).triangular() }
+        }.minOrNull() ?: 0
     }
 
     val input = readInput("Day07")
