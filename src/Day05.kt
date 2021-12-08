@@ -18,7 +18,10 @@ fun main() {
 
 fun toLine(input: String): Line {
     return input.split(" -> ").map { it.split(",") }.zipWithNext { a, b ->
-        Line(Coordinate(col = a.first().toInt(), row = a.last().toInt()), Coordinate(col = b.first().toInt(), row = b.last().toInt()))
+        Line(
+            Coordinate(col = a.first().toInt(), row = a.last().toInt()),
+            Coordinate(col = b.first().toInt(), row = b.last().toInt())
+        )
     }.first()
 }
 

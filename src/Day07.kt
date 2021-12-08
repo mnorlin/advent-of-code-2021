@@ -8,10 +8,11 @@ fun main() {
     }
 
     fun part2(crabs: List<Int>): Int {
-        val max = crabs.maxOrNull()
-        return (0..(max ?: 0)).map {
-            position -> crabs.sumOf { abs(it - position).triangular() }
-        }.minOrNull() ?: 0
+        val min = crabs.minOrNull()!!
+        val max = crabs.maxOrNull()!!
+        return (min..max).minOf { position ->
+            crabs.sumOf { abs(it - position).triangular() }
+        }
     }
 
     val input = readInput("Day07")

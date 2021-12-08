@@ -18,7 +18,8 @@ fun main() {
     val input = readInput("Day08")
     val inputWires = input.map { it.split(" | ")[0] }.map { it.split(" ").map { it.toCharArray() } }
     val outputWires = input.map { it.split(" | ")[1] }.map { it.split(" ") }
-    val wiring = inputWires.zip(outputWires).map{Wiring(it.first, it.second)}
+    val wiring = inputWires.zip(outputWires).map { Wiring(it.first, it.second) }
+
     println(part1(outputWires))
     println(part2(wiring))
 }
@@ -62,18 +63,25 @@ class Circuit {
                     .reduce { commonSegments, digitSegment -> commonSegments.intersect(digitSegment) }
 
             // We remove the letters that are not in the corresponding segments
-            model.mapIndexed { segment, possibleWires -> if (possibleSegments.contains(segment)) possibleWires.filter { wire.contains(it) } else possibleWires }
+            model.mapIndexed { segment, possibleWires ->
+                if (possibleSegments.contains(segment)) possibleWires.filter {
+                    wire.contains(
+                        it
+                    )
+                } else possibleWires
+            }
         }
 
         // There are still segments with multiple possible wires, loop until wire is mapped 1:1 with segment
         while (archetype.flatten().count() != 7) {
             val finishedWires = archetype.filter { it.count() == 1 }.flatten();
-            archetype = archetype.map { model -> if (model.count() != 1) model.filter { !finishedWires.contains(it) } else model }
+            archetype =
+                archetype.map { model -> if (model.count() != 1) model.filter { !finishedWires.contains(it) } else model }
         }
     }
 
     fun calculateDigit(input: String): Int {
-        val segments = input.map{archetype.flatten().indexOf(it)}.toSet()
-        return digits.find{it.segments == segments}?.digit?:-1
+        val segments = input.map { archetype.flatten().indexOf(it) }.toSet()
+        return digits.find { it.segments == segments }?.digit ?: -1
     }
 }

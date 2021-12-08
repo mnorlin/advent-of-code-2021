@@ -28,9 +28,10 @@ fun List<IntArray>.transpose(): List<IntArray> {
 fun Int.flipBit(): Int = if(this == 1) 0 else 1
 
 /**
- * Get triangular number for an Int
+ * Get triangular number (1+2+3...) for an Int
  */
 fun Int.triangular(): Int = if (this == 0) 0 else (this downTo 0).reduce{sum, number -> sum + number}
+
 /**
  * Converts string to md5 hash.
  */

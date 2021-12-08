@@ -32,7 +32,7 @@ fun main() {
     }.map { Board(it) }
 
     println(part1(boards, drawn))
-    boards.forEach{it.clear()}
+    boards.forEach { it.clear() }
     println(part2(boards, drawn))
 }
 

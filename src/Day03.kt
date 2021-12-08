@@ -11,7 +11,7 @@ fun main() {
     fun part2(matrix: List<IntArray>): Int {
         val gamma = mutableListOf<Int>()
         val epsilon = mutableListOf<Int>()
-        for (col in matrix.first().indices) {
+        for (col in matrix.transpose().indices) {
             val filterGamma = matrix.filter { it.take(gamma.count()) == gamma }
             val filterEpsilon = matrix.filter { it.take(epsilon.count()) == epsilon }
 
@@ -19,7 +19,8 @@ fun main() {
             else gamma.add(mostCommon(matrix.filter { it.take(gamma.count()) == gamma }.transpose()[col]))
 
             if (filterEpsilon.count() == 1) epsilon.addAll(filterEpsilon.first().drop(epsilon.count()))
-            else epsilon.add(mostCommon(matrix.filter { it.take(epsilon.count()) == epsilon }.transpose()[col]).flipBit())
+            else epsilon.add(mostCommon(matrix.filter { it.take(epsilon.count()) == epsilon }
+                .transpose()[col]).flipBit())
         }
 
         return gamma.joinToString("").toInt(2) * epsilon.joinToString("").toInt(2)

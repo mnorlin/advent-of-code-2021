@@ -5,7 +5,7 @@ fun main() {
     }
 
     fun part2(input: List<Int>): Int {
-        return input.windowed(3, 1) { x -> x.sum() }
+        return input.windowed(3, 1) { it.sum() }
             .zipWithNext { a, b -> b > a }
             .count { it }
     }

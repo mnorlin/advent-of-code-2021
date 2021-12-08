@@ -35,7 +35,10 @@ fun main() {
 }
 
 fun toCommands(input: List<String>): List<Command<String, Int>> {
-    return input.flatMap { it.split(" ").zipWithNext { a, b -> Command(a, b.toInt()) } }
+    return input.flatMap {
+        it.split(" ")
+            .zipWithNext { type, value -> Command(type, value.toInt()) }
+    }
 }
 
 data class Command<T, V>(val type: T, val value: V)
