@@ -74,7 +74,7 @@ class Circuit {
 
         // There are still segments with multiple possible wires, loop until wire is mapped 1:1 with segment
         while (archetype.flatten().count() != 7) {
-            val finishedWires = archetype.filter { it.count() == 1 }.flatten();
+            val finishedWires = archetype.filter { it.count() == 1 }.flatten()
             archetype =
                 archetype.map { model -> if (model.count() != 1) model.filter { !finishedWires.contains(it) } else model }
         }
